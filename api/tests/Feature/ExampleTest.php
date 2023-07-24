@@ -28,4 +28,5 @@ class ExampleTest extends TestCase
 
         $this->assertEquals(20, User::all()->count());
     }
+
 }
