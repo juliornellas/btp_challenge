@@ -7,6 +7,7 @@ export default {
   setup() {
     const route = useRoute();
     const store = useUsersStore();
+
     const { name, email, latitude, longitude } = route.params;
 
     store.getWeather(email, latitude, longitude);
@@ -14,7 +15,7 @@ export default {
     const weather = ref(store.userWeather);
 
     const date = computed(() => {
-      let dt = new Date(weather.value.dt * 1000);
+      let dt = new Date(weather?.value.dt * 1000);
       let day = dt.getDate();
       let month = dt.getMonth() + 1;
       let year = dt.getFullYear();
@@ -24,18 +25,20 @@ export default {
     });
     const sunrise = computed(
       () =>
-        new Date(weather.value.sys.sunrise * 1000).toTimeString().split(" ")[0]
+        new Date(weather?.value?.sys.sunrise * 1000)
+          .toTimeString()
+          .split(" ")[0]
     );
     const sunset = computed(
       () =>
-        new Date(weather.value.sys.sunset * 1000).toTimeString().split(" ")[0]
+        new Date(weather?.value?.sys.sunset * 1000).toTimeString().split(" ")[0]
     );
     const icon = computed(
       () =>
-        `http://openweathermap.org/img/wn/${weather.value?.weather[0].icon}@4x.png`
+        `http://openweathermap.org/img/wn/${weather?.value?.weather[0].icon}@4x.png`
     );
     const iconDescriprion = computed(
-      () => weather.value?.weather[0].description
+      () => weather?.value?.weather[0].description
     );
 
     return {
@@ -68,24 +71,26 @@ export default {
           <p class="text-slate-900 dark:text-slate-200">Date {{ date }}</p>
           <img :src="icon" :alt="iconDescriprion" />
           <p class="pb-6 font-bold text-indigo-800 dark:text-indigo-200">
-            {{ weather?.weather[0]?.main }}
+            {{ weather?.weather[0].main }}
           </p>
         </div>
         <div class="text-left mt-4">
           <div>
             <p>
               <span class="italic text-red-800 dark:text-red-200"> High </span>
-              &nbsp;{{ weather.main.temp_max }}&deg;C
+              &nbsp;{{ weather?.main.temp_max }}&deg;C
               <br />
               <span class="italic text-blue-800 dark:text-blue-200"> Low </span>
-              &nbsp;{{ weather.main.temp_min }}&deg;C
+              &nbsp;{{ weather?.main.temp_min }}&deg;C
               <br />
               High Feels like {{ weather.main.feels_like }}&deg;C
             </p>
             <p class="my-2"></p>
-            <p>Pressure {{ weather.main.pressure }}mb</p>
-            <p class="my-2">Humidity {{ weather.main.humidity }}%</p>
-            <p>Wind {{ weather.wind.speed }}m/s, {{ weather.wind.deg }}&deg;</p>
+            <p>Pressure {{ weather?.main.pressure }}mb</p>
+            <p class="my-2">Humidity {{ weather?.main.humidity }}%</p>
+            <p>
+              Wind {{ weather?.wind.speed }}m/s, {{ weather?.wind.deg }}&deg;
+            </p>
             <p class="mt-2">
               <span class="text-red-800 dark:text-red-200"> Sunrise </span>
               {{ sunrise }}

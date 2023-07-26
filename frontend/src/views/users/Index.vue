@@ -1,6 +1,6 @@
 <script>
 import Table from "@/components/UI/Table.vue";
-import { useUsersStore } from "@/stores/usersWeather";
+import { useUsersStore } from "@/stores/users";
 
 export default {
   components: {

@@ -43,7 +43,7 @@ export default {
         :key="email"
       >
         <td
-          class="border border-slate-300 dark:border-slate-700 p-2 text-slate-500 dark:text-slate-400"
+          class="border border-slate-300 dark:border-slate-700 p-2 text-blue-500 dark:text-blue-400"
         >
           <RouterLink
             :to="{
