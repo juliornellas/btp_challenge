@@ -11,19 +11,6 @@ use SebastianBergmann\Type\FalseType;
 
 class WeatherController extends Controller
 {
-
-    public function redis(){
-
-        foreach(User::all() as $user){
-            $identifier=`weather-$user->email`;
-            Redis::set($identifier,json_encode($user));
-        }
-
-        // Redis::set('users:1:first_name','Donald');
-        // Redis::set('users:2:first_name','Mikey');
-        // Redis::set('users:3:first_name','Batman');
-    }
-
     public function index(){
         GetUsersWeatherJob::dispatch();
 
