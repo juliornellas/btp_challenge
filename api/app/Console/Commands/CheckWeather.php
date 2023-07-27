@@ -27,6 +27,6 @@ class CheckWeather extends Command
      */
     public function handle(Schedule $schedule): void
     {
-        $schedule->job(new GetUsersWeatherJob)->hourly();
+        $schedule->job(new GetUsersWeatherJob);
     }
 }
