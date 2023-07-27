@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class GetUsersWeatherJob implements ShouldQueue
 {
@@ -31,20 +32,19 @@ class GetUsersWeatherJob implements ShouldQueue
     {
         foreach (User::all() as $user) {
 
-            $expiration = 60 * 60;
-            $identifier = `weather-$user->email`;
+            $userWeather = Redis::get($user->email);
 
-            $client = new Client();
+            if(isset($userWeather)){
+                Redis::del($user->email);
+            }
+
             $key = "e40f94a3fb6a2f1d289c289582e30dc2";
             $url = "http://api.openweathermap.org/data/2.5/weather?lat=".$user->latitude."&lon=".$user->longitude."&appid=".$key."&units=metric&lang=en";
 
-            Cache::store('redis')->remember($identifier, $expiration, function() use($client, $url){
-                $response = $client->get($url);
+            $client = new Client();
+            $response = $client->get($url);
 
-                return response()->json([
-                    'user' => json_decode($response->getBody())
-                ]);
-            });
+            Redis::set($user->email,$response->getBody());
 
         }
     }

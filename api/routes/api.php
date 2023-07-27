@@ -23,3 +23,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WeatherController::class, 'index']);
 Route::get('/get-user-weather/{email}/{latitude}/{longitude}', [WeatherController::class, 'getUserWeather']);
+Route::get('/redis', [WeatherController::class, 'redis']);
