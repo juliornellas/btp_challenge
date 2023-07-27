@@ -13,15 +13,11 @@ class WeatherController extends Controller
     public function index(){
         GetUsersWeatherJob::dispatch();
 
-        $expiration = 60 * 10;
-        $key = 'weather';
-        return Cache::store('redis')->remember($key, $expiration, function(){
-            return response()->json([
-                'message' => 'all systems are a go',
-                'users' => User::all(),
-            ]);
+        return response()->json([
+            'message' => 'all systems are a go',
+            'users' => User::all(),
+        ]);
 
-        });
     }
 
     public function getUserWeather($email, $latitude, $longitude){
