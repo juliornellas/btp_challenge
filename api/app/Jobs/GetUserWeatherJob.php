@@ -29,22 +29,24 @@ class GetUserWeatherJob implements ShouldQueue
      */
     public function handle(): void
     {
-        foreach (User::all() as $user) {
+        // foreach (User::all() as $user) {
 
-            $userWeather = Redis::get($user->email);
+            User::all()->each(function(User $user){
+                $userWeather = Redis::get($user->email);
 
-            if(isset($userWeather)){
-                Redis::del($user->email);
-            }
+                if(isset($userWeather)){
+                    Redis::del($user->email);
+                }
 
-            $key = "e40f94a3fb6a2f1d289c289582e30dc2";
-            $url = "http://api.openweathermap.org/data/2.5/weather?lat=".$user->latitude."&lon=".$user->longitude."&appid=".$key."&units=metric&lang=en";
+                $key = "e40f94a3fb6a2f1d289c289582e30dc2";
+                $url = "http://api.openweathermap.org/data/2.5/weather?lat=".$user->latitude."&lon=".$user->longitude."&appid=".$key."&units=metric&lang=en";
 
-            $client = new Client();
-            $response = $client->get($url);
+                $client = new Client();
+                $response = $client->get($url);
 
-            Redis::set($user->email,$response->getBody());
+                Redis::set($user->email,$response->getBody());
+            });
 
-        }
+        // }
     }
 }

@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('command:weather')->hourly();
+        $schedule->command('command:weather')->hourly()->withoutOverlapping();
+        $schedule->command('queue:work')->everyMinute()->withoutOverlapping();
     }
 
     /**
