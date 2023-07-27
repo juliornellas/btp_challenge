@@ -7,7 +7,6 @@ use GuzzleHttp\Client;
 use App\Jobs\GetUsersWeatherJob;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
-use SebastianBergmann\Type\FalseType;
 
 class WeatherController extends Controller
 {
@@ -31,7 +30,6 @@ class WeatherController extends Controller
 
         if(isset($userWeather)){
 
-
         $expiration = 60 * 60;
         $key = `weather-$email`;
         return Cache::store('redis')->remember($key, $expiration, function() use($userWeather){
@@ -50,18 +48,11 @@ class WeatherController extends Controller
 
             $response = $client->get($url);
 
-
             $weather = Redis::set($email, $response->getBody());
 
-            $expiration = 60 * 60;
-            $key = `weather-$email`;
-            return Cache::store('redis')->remember($key, $expiration, function() use($weather){
-
-                return response()->json([
-                    'user' => json_decode($weather)
-                ]);
-
-            });
+            return response()->json([
+                'user' => json_decode($weather)
+            ]);
 
         }
 
